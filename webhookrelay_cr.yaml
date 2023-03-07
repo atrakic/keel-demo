@@ -1,0 +1,15 @@
+apiVersion: forward.webhookrelay.com/v1
+kind: WebhookRelayForward
+metadata:
+  name: keel-forward
+spec:
+  buckets:
+  - name: dockerhub-to-keel
+    inputs:
+    - name: dockerhub-endpoint
+      description: "Public endpoint"
+      responseBody: "OK"
+      responseStatusCode: 200
+    outputs:
+    - name: keel
+      destination: http://keel:9300/v1/webhooks/dockerhub
