@@ -17,10 +17,6 @@ env:
 jobs:
   docker-build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ${{github.workspace}}/src
 
     permissions:
       contents: read
@@ -72,7 +68,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          context: .
+          context: ${{github.workspace}}/src
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
