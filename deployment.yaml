@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-  name: pushwf  
+  name: pushwf
   labels: 
     name: "pushwf"
     # force policy will ensure that deployment is updated
