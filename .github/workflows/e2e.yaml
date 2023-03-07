@@ -1,0 +1,40 @@
+name: e2e
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ '*' ]
+    paths-ignore:
+      - '**/docs'
+      - '**/README.md'
+    tags-ignore: [ '*' ]
+
+jobs:
+  kind-e2e:
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Install tools
+        run: brew bundle
+
+      - name: KinD
+        uses: helm/kind-action@v1.4.0
+        with:
+          install_only: true
+
+      - name: Run e2e
+        run: |
+          scripts/e2e.sh
+
+      - name: Debug failure
+        if: failure()
+        run: |
+          kubectl get all,cm,sa -A
+          kubectl get events --sort-by='.metadata.creationTimestamp' -A
+          kubectl logs --all-containers=true
