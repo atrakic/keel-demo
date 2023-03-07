@@ -14,12 +14,14 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
-
 jobs:
-  build:
-
+  docker-build:
     runs-on: ubuntu-latest
-    working-directory: ${{github.workspace}}/src
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{github.workspace}}/src
+
     permissions:
       contents: read
       packages: write
