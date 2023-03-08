@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-var version = "v0"
+var version = "bfaa02f"
 
 func main() {
 
