@@ -27,7 +27,7 @@ kubectl --namespace=push-workflow get pods -l "app=keel"
 
 
 ## 3) App
-kubectl apply -f deployment.yaml
+kubectl apply -f manifests/deployment.yaml
 kubectl wait --for=condition=Ready pods --timeout=300s -l "app=pushwf"
 kubectl expose deployment pushwf --port=80 --target-port=8500
 kubectl create ingress pushwf --class=nginx --rule="keel-demo.local/*=pushwf:80"

@@ -10,6 +10,7 @@ metadata:
     keel.sh/trigger: poll # <-- actively query registry, otherwise defaults to webhooks
   annotations:
     keel.sh/pollSchedule: "@every 10s"
+    # keel.sh/notify: chan1,chan2
 spec:
   replicas: 1
   revisionHistoryLimit: 5
