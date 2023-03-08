@@ -33,5 +33,14 @@ sleep 3
 
 
 ## 4) Test
+GITHUB_ACTOR=${GITHUB_ACTOR:-$(whoami)}
+git config --local user.name "$GITHUB_ACTOR"
+git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+sed -i "s/^var version =.*/var version = $(git rev-parse --short HEAD)/" src/version.go
+git add src/version.go
+git diff --name-only
+git commit --allow-empty -m "e2e: $(shell git rev-parse --short HEAD)"
+git push -u origin
+sleep 30
 curl -fisk localhost:80 -H "Host: keel-demo.local"
-#kind delete cluster
+kind delete cluster

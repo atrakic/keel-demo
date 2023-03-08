@@ -1,13 +1,6 @@
 name: e2e
-
 on:
   workflow_dispatch:
-  push:
-    branches: [ '*' ]
-    paths:
-      - tests/**
-      - .github/workflows/e2e.yml
-    tags-ignore: [ '*' ]
 
 jobs:
   kind-e2e:
