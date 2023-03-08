@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+var version = "v0"
+
 func main() {
 
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {

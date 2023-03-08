@@ -17,12 +17,14 @@ kubectl wait --namespace ingress-nginx \
 kubectl create namespace push-workflow
 kubectl config set-context "$(kubectl config current-context)" --namespace=push-workflow
 
+
 ## 2) KEEL.sh
 helm repo add keel https://charts.keel.sh 
 helm repo update
 helm upgrade --install keel --namespace=push-workflow keel/keel --set helmProvider.enabled="false" --set service.enabled="true" --set service.type="ClusterIP"
 kubectl --namespace=push-workflow wait --for=condition=Ready pods --timeout=300s -l "app=keel"
 kubectl --namespace=push-workflow get pods -l "app=keel"
+
 
 ## 3) App
 kubectl apply -f deployment.yaml
@@ -36,10 +38,14 @@ sleep 3
 GITHUB_ACTOR=${GITHUB_ACTOR:-$(whoami)}
 git config --local user.name "$GITHUB_ACTOR"
 git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-sed -i "s/^var version =.*/var version = $(git rev-parse --short HEAD)/" src/version.go
-git add src/version.go
-git diff --name-only
-git commit --allow-empty -m "e2e: $(shell git rev-parse --short HEAD)"
+SED="sed"
+if [[ $OSTYPE == 'darwin'* ]]; then
+  SED="gsed"
+fi
+$SED -i "s/^var version =.*/var version = \"$(git rev-parse --short HEAD)\"/" src/app.go
+git add src/app.go
+git diff
+git commit --allow-empty -m "e2e: $(git rev-parse --short HEAD)"
 git push -u origin
 sleep 30
 curl -fisk localhost:80 -H "Host: keel-demo.local"
