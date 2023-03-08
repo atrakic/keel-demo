@@ -8,7 +8,8 @@ metadata:
     # even when tag is unchanged (latest remains)
     keel.sh/policy: force
     keel.sh/trigger: poll # <-- actively query registry, otherwise defaults to webhooks
-    #keel.sh/pollSchedule: "@every 30s"
+  annotations:
+    keel.sh/pollSchedule: "@every 10s"
 spec:
   replicas: 1
   revisionHistoryLimit: 5
@@ -22,7 +23,7 @@ spec:
         app: pushwf
     spec:     
       containers:                    
-        - image: ghcr.io/atrakic/keel-demo:latest
+        - image: ghcr.io/atrakic/keel-demo:latest # localhost:5001/keel-demo:latest
           imagePullPolicy: Always # this is required to force pull image     
           name: pushwf
           ports:
