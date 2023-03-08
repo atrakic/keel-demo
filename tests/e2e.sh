@@ -21,10 +21,17 @@ kubectl config set-context "$(kubectl config current-context)" --namespace=push-
 helm repo add keel https://charts.keel.sh 
 helm repo update
 helm upgrade --install keel --namespace=push-workflow keel/keel --set helmProvider.enabled="false" --set service.enabled="true" --set service.type="ClusterIP"
+kubectl --namespace=push-workflow wait --for=condition=Ready pods --timeout=300s -l "app=keel"
+kubectl --namespace=push-workflow get pods -l "app=keel"
 
 ## 3) App
 kubectl apply -f deployment.yaml
 kubectl wait --for=condition=Ready pods --timeout=300s -l "app=pushwf"
 kubectl expose deployment pushwf --port=80 --target-port=8500
 kubectl create ingress pushwf --class=nginx --rule="keel-demo.local/*=pushwf:80"
+sleep 1
+
+
+## 4) Test
 curl -fisk localhost:80 -H "Host: keel-demo.local"
+kind delete cluster

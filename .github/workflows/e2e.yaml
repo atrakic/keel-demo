@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches: [ '*' ]
+    paths:
+      - tests/**
+      - .github/workflows/e2e.yml
     paths-ignore:
       - '**/docs'
       - '**/README.md'
