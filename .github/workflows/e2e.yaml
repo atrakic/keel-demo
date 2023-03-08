@@ -30,8 +30,8 @@ jobs:
 
       - name: Run e2e
         run: |
-          chmod +x scripts/e2e.sh
-          scripts/e2e.sh
+          chmod +x tests/e2e.sh
+          tests/e2e.sh
 
       - name: Debug failure
         if: failure()
