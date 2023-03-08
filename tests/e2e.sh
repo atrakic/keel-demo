@@ -29,9 +29,9 @@ kubectl apply -f deployment.yaml
 kubectl wait --for=condition=Ready pods --timeout=300s -l "app=pushwf"
 kubectl expose deployment pushwf --port=80 --target-port=8500
 kubectl create ingress pushwf --class=nginx --rule="keel-demo.local/*=pushwf:80"
-sleep 1
+sleep 3
 
 
 ## 4) Test
 curl -fisk localhost:80 -H "Host: keel-demo.local"
-kind delete cluster
+#kind delete cluster
